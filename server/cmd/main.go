@@ -40,7 +40,7 @@ func main() {
 				continue
 			}
 
-			connections[conn] = string(cutNil(buffer))
+			connections[conn] = string(editBuffer(buffer))
 			fmt.Println(connections)
 
 			if err != nil {
@@ -57,16 +57,16 @@ func main() {
 						return
 					}
 
-					cuttedBuffer := cutNil(buffer)
+					cuttedBuffer := editBuffer(buffer)
 
 					log.Println(cuttedBuffer)
 
 					for key, _ := range connections {
 
 						if key != *conn {
-							log.Println([]byte(connections[*conn]))
+							log.Println(cuttedBuffer)
 							//fmt.Println(fmt.Sprintf("%s:", connections[*conn]) + string(buffer))
-							key.Write([]byte(fmt.Sprintf("%s:", connections[*conn]) + string(cuttedBuffer)))
+							key.Write([]byte(fmt.Sprintf("\n%s: ", connections[*conn]) + string(cuttedBuffer)))
 						}
 
 					}
@@ -84,10 +84,14 @@ func main() {
 
 }
 
-func cutNil(arr []byte) []byte {
+func editBuffer(arr []byte) []byte {
 	var newArr []byte
+	length := len(arr)
 
 	for i := 0; arr[i] != 0; i++ {
+		if arr[i] == 10 && (i == length-1 || arr[i+1] == 0) {
+			break
+		}
 		newArr = append(newArr, arr[i])
 	}
 

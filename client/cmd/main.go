@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"log"
@@ -21,8 +22,18 @@ func main() {
 		conn.Write([]byte(os.Args[1]))
 
 		for {
-			var message string
-			fmt.Scanln(&message)
+
+			in := bufio.NewReader(os.Stdin)
+			//out := bufio.NewWriter(os.Stdout)
+			fmt.Printf("\033[%d;%dH", 30, 0)
+			fmt.Print("You: ")
+
+			message, err := in.ReadString('\n')
+
+			if err != nil {
+				log.Println(err)
+				continue
+			}
 
 			conn.Write([]byte(message))
 		}
