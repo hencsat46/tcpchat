@@ -34,7 +34,9 @@ func main() {
 			buffer := make([]byte, 1024)
 			_, err = conn.Read(buffer)
 			if errors.Is(err, io.EOF) {
+
 				log.Println("User disconnected")
+
 				conn.Close()
 				i--
 				continue
@@ -53,6 +55,8 @@ func main() {
 
 					_, err := (*conn).Read(buffer)
 					if errors.Is(err, io.EOF) {
+						delete(connections, *conn)
+						log.Println(connections)
 						log.Printf("%s disconnected\n", connections[*conn])
 						return
 					}
