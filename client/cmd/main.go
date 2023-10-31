@@ -13,7 +13,7 @@ import (
 
 func main() {
 	conn, err := net.Dial("tcp4", "localhost:5000")
-
+	
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,7 +26,6 @@ func main() {
 			in := bufio.NewReader(os.Stdin)
 			//out := bufio.NewWriter(os.Stdout)
 			fmt.Printf("\033[%d;%dH", 30, 0)
-			fmt.Print("You: ")
 
 			message, err := in.ReadString('\n')
 
